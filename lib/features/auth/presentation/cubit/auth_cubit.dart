@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../domain/entities/user_entity.dart';
@@ -13,6 +14,9 @@ class AuthCubit extends Cubit<AuthState> {
   final SaveLoginStatusUseCase saveLoginStatusUseCase;
   final CheckLoginStatusUseCase checkLoginStatusUseCase;
   final AuthRepository authRepository;
+
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   AuthCubit(
     this.loginUseCase,
@@ -49,5 +53,12 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> logout() async {
     await saveLoginStatusUseCase(isLoggedIn: false, user: null);
     emit(const AuthInitial());
+  }
+
+  @override
+  Future<void> close() {
+    emailController.dispose();
+    passwordController.dispose();
+    return super.close();
   }
 }
