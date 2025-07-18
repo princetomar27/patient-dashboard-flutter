@@ -15,6 +15,13 @@ import '../features/dashboard/domain/repositories/dashboard_repository.dart';
 import '../features/dashboard/domain/usecases/get_patient_info_usecase.dart';
 import '../features/dashboard/presentation/cubit/dashboard_cubit.dart';
 import '../features/home/presentation/cubit/home_cubit.dart';
+import '../features/shipment_history/data/datasources/shipment_datasource.dart';
+import '../features/shipment_history/data/datasources/shipment_local_datasource.dart';
+import '../features/shipment_history/data/repositories/shipment_repository_impl.dart';
+import '../features/shipment_history/domain/repositories/shipment_repository.dart';
+import '../features/shipment_history/domain/usecases/get_shipment_details_usecase.dart';
+import '../features/shipment_history/domain/usecases/get_shipment_history_usecase.dart';
+import '../features/shipment_history/presentation/cubit/shipment_history/shipment_history_cubit.dart';
 
 final sl = GetIt.instance;
 
@@ -68,4 +75,25 @@ void setupLocator() {
 
   // Home dependencies
   sl.registerFactory<HomeCubit>(() => HomeCubit());
+
+  // Shipment History dependencies
+  sl.registerLazySingleton<ShipmentLocalDataSource>(
+    () => ShipmentLocalDataSource(),
+  );
+  sl.registerLazySingleton<ShipmentDataSource>(() => ShipmentLocalDataSource());
+  sl.registerLazySingleton<ShipmentRepository>(
+    () => ShipmentRepositoryImpl(dataSource: sl<ShipmentDataSource>()),
+  );
+  sl.registerLazySingleton<GetShipmentHistoryUseCase>(
+    () => GetShipmentHistoryUseCase(sl<ShipmentRepository>()),
+  );
+  sl.registerLazySingleton<GetShipmentDetailsUseCase>(
+    () => GetShipmentDetailsUseCase(sl<ShipmentRepository>()),
+  );
+  sl.registerFactory<ShipmentCubit>(
+    () => ShipmentCubit(
+      getShipmentHistoryUseCase: sl<GetShipmentHistoryUseCase>(),
+      getShipmentDetailsUseCase: sl<GetShipmentDetailsUseCase>(),
+    ),
+  );
 }

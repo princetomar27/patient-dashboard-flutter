@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/injection.dart';
 import '../../../dashboard/presentation/pages/dashboard_page.dart';
+import '../../../shipment_history/presentation/cubit/shipment_history/shipment_history_cubit.dart';
+import '../../../shipment_history/presentation/pages/shipment_history_page.dart';
 import '../../domain/entities/home_tab_enum.dart';
 import '../cubit/home_cubit.dart';
 
@@ -123,45 +126,20 @@ class _HomePageState extends State<HomePage>
               ),
               // Tab Content
               Expanded(
-                child: TabBarView(
-                  controller: homeCubit.tabController,
-                  children:
-                      HomeTabEnum.values.map((tab) {
-                        switch (tab) {
-                          case HomeTabEnum.dashboard:
-                            return const DashboardPage();
-                          case HomeTabEnum.shipmentHistory:
-                            return const Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.inventory,
-                                    size: 64,
-                                    color: Colors.grey,
-                                  ),
-                                  SizedBox(height: 16),
-                                  Text(
-                                    'Shipment History',
-                                    style: TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                  SizedBox(height: 8),
-                                  Text(
-                                    'Coming Soon',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            );
-                        }
-                      }).toList(),
+                child: BlocProvider(
+                  create: (context) => sl<ShipmentCubit>(),
+                  child: TabBarView(
+                    controller: homeCubit.tabController,
+                    children:
+                        HomeTabEnum.values.map((tab) {
+                          switch (tab) {
+                            case HomeTabEnum.dashboard:
+                              return const DashboardPage();
+                            case HomeTabEnum.shipmentHistory:
+                              return const ShipmentHistoryPage();
+                          }
+                        }).toList(),
+                  ),
                 ),
               ),
             ],

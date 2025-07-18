@@ -8,6 +8,7 @@ import 'features/auth/presentation/pages/login_page.dart';
 import 'features/dashboard/presentation/cubit/dashboard_cubit.dart';
 import 'features/home/presentation/cubit/home_cubit.dart';
 import 'features/home/presentation/pages/home_page.dart';
+import 'features/shipment_history/presentation/pages/shipment_history_page.dart';
 
 void main() {
   setupLocator();
@@ -35,6 +36,10 @@ class MyApp extends StatelessWidget {
         GoRoute(
           path: '/dashboard',
           builder: (context, state) => const HomePage(),
+        ),
+        GoRoute(
+          path: '/shipment-history',
+          builder: (context, state) => const ShipmentHistoryPage(),
         ),
       ],
       redirect: (context, state) {
