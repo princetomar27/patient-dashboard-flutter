@@ -14,6 +14,7 @@ import '../features/dashboard/data/repositories/dashboard_repository_impl.dart';
 import '../features/dashboard/domain/repositories/dashboard_repository.dart';
 import '../features/dashboard/domain/usecases/get_patient_info_usecase.dart';
 import '../features/dashboard/presentation/cubit/dashboard_cubit.dart';
+import '../features/home/presentation/cubit/home_cubit.dart';
 
 final sl = GetIt.instance;
 
@@ -64,4 +65,7 @@ void setupLocator() {
   sl.registerFactory<DashboardCubit>(
     () => DashboardCubit(sl<GetPatientInfoUseCase>()),
   );
+
+  // Home dependencies
+  sl.registerFactory<HomeCubit>(() => HomeCubit());
 }

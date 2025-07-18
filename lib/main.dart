@@ -6,7 +6,8 @@ import 'core/injection.dart';
 import 'features/auth/presentation/cubit/auth_cubit.dart';
 import 'features/auth/presentation/pages/login_page.dart';
 import 'features/dashboard/presentation/cubit/dashboard_cubit.dart';
-import 'features/dashboard/presentation/pages/dashboard_page.dart';
+import 'features/home/presentation/cubit/home_cubit.dart';
+import 'features/home/presentation/pages/home_page.dart';
 
 void main() {
   setupLocator();
@@ -15,6 +16,7 @@ void main() {
       providers: [
         BlocProvider(create: (_) => sl<AuthCubit>()),
         BlocProvider(create: (_) => sl<DashboardCubit>()),
+        BlocProvider(create: (_) => sl<HomeCubit>()),
       ],
       child: const MyApp(),
     ),
@@ -32,7 +34,7 @@ class MyApp extends StatelessWidget {
         GoRoute(path: '/login', builder: (context, state) => const LoginPage()),
         GoRoute(
           path: '/dashboard',
-          builder: (context, state) => const DashboardPage(),
+          builder: (context, state) => const HomePage(),
         ),
       ],
       redirect: (context, state) {
