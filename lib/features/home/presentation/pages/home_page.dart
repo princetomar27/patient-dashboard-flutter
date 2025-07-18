@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../core/injection.dart';
+import '../../../auth/presentation/cubit/auth_cubit.dart';
 import '../../../dashboard/presentation/pages/dashboard_page.dart';
 import '../../../shipment_history/presentation/cubit/shipment_history/shipment_history_cubit.dart';
 import '../../../shipment_history/presentation/pages/shipment_history_page.dart';
@@ -75,16 +77,22 @@ class _HomePageState extends State<HomePage>
                         ),
                         const Spacer(),
                         // Logout icon
-                        Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withValues(alpha: 0.2),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: const Icon(
-                            Icons.logout,
-                            color: Colors.white,
-                            size: 20,
+                        InkWell(
+                          onTap: () async {
+                            await context.read<AuthCubit>().logout();
+                            context.go('/login');
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withValues(alpha: 0.2),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: const Icon(
+                              Icons.logout,
+                              color: Colors.white,
+                              size: 20,
+                            ),
                           ),
                         ),
                       ],
