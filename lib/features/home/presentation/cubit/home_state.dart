@@ -12,10 +12,10 @@ class HomeInitial extends HomeState {
 }
 
 class HomeTabChanged extends HomeState {
-  final int tabIndex;
+  final HomeTabEnum currentTab;
 
-  const HomeTabChanged(this.tabIndex);
+  const HomeTabChanged(this.currentTab);
 
   @override
-  List<Object?> get props => [tabIndex];
+  List<Object?> get props => [currentTab];
 }

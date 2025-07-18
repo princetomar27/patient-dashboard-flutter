@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../dashboard/presentation/pages/dashboard_page.dart';
+import '../../domain/entities/home_tab_enum.dart';
 import '../cubit/home_cubit.dart';
 
 class HomePage extends StatefulWidget {
@@ -86,8 +87,8 @@ class _HomePageState extends State<HomePage>
                       ],
                     ),
                     const SizedBox(height: 8),
-                    // User name - will be updated when data loads
-                    if (state is HomeTabChanged && state.tabIndex == 0)
+                    if (state is HomeTabChanged &&
+                        state.currentTab == HomeTabEnum.dashboard)
                       const Text(
                         'Sarah Johnson',
                         style: TextStyle(fontSize: 16, color: Colors.white70),
@@ -109,43 +110,58 @@ class _HomePageState extends State<HomePage>
                   unselectedLabelColor: Colors.grey,
                   indicatorColor: const Color(0xFF3A86FF),
                   indicatorWeight: 3,
-                  tabs: const [
-                    Tab(icon: Icon(Icons.dashboard), text: 'Dashboard'),
-                    Tab(icon: Icon(Icons.inventory), text: 'Shipment History'),
-                  ],
+                  tabs:
+                      HomeTabEnum.values
+                          .map(
+                            (tab) => Tab(
+                              icon: Icon(tab.icon),
+                              text: tab.displayName,
+                            ),
+                          )
+                          .toList(),
                 ),
               ),
               // Tab Content
               Expanded(
                 child: TabBarView(
                   controller: homeCubit.tabController,
-                  children: [
-                    // Dashboard Tab
-                    const DashboardPage(),
-                    // Shipment History Tab
-                    const Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.inventory, size: 64, color: Colors.grey),
-                          SizedBox(height: 16),
-                          Text(
-                            'Shipment History',
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          SizedBox(height: 8),
-                          Text(
-                            'Coming Soon',
-                            style: TextStyle(fontSize: 16, color: Colors.grey),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                  children:
+                      HomeTabEnum.values.map((tab) {
+                        switch (tab) {
+                          case HomeTabEnum.dashboard:
+                            return const DashboardPage();
+                          case HomeTabEnum.shipmentHistory:
+                            return const Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.inventory,
+                                    size: 64,
+                                    color: Colors.grey,
+                                  ),
+                                  SizedBox(height: 16),
+                                  Text(
+                                    'Shipment History',
+                                    style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                  SizedBox(height: 8),
+                                  Text(
+                                    'Coming Soon',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                        }
+                      }).toList(),
                 ),
               ),
             ],
